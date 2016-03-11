@@ -1,14 +1,15 @@
-##/tg/station v1.0.1
+##-tg-LowPop v1.0
 
-[![Build Status](https://travis-ci.org/tgstation/-tg-station.png)](https://travis-ci.org/tgstation/-tg-station)
+[![Build Status](https://api.travis-ci.org/Hispanistation/-tg-lowpop.png)](https://travis-ci.org/Hispanistation/-tg-lowpop)
 
 
-**Website:** http://www.tgstation13.org <BR>
-**Code:** https://github.com/tgstation/-tg-station <BR>
+**Website:** http://hispanistation12.enjin.com/ <BR>
+**Code:** https://github.com/hispanistation/-tg-lowpop <BR>
 **Wiki** http://tgstation13.org/wiki/Main_Page <BR>
-**IRC:** irc://irc.rizon.net/coderbus or if you dont have an IRC client, you can click  [here](https://kiwiirc.com/client/irc.rizon.net:6667/?&theme=cli#coderbus).<BR>
 
+Spanish Fork with modifications, being played in a little pop server (5-20 users)
 
+#TG README
 ##DOWNLOADING
 
 There are a number of ways to download the source code. Some are described here, an alternative all-inclusive guide is also located at http://www.tgstation13.org/wiki/Downloading_the_source_code
