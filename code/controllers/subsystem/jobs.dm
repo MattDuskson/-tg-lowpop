@@ -105,6 +105,27 @@ var/datum/subsystem/job/SSjob
 			candidates += player
 	return candidates
 
+/datum/subsystem/job/proc/FindValidCandidates(datum/job/job, flag)
+	var/list/candidates = list()
+	for(var/mob/new_player/player in unassigned)
+		if(jobban_isbanned(player, job.title))
+			Debug("FOC isbanned failed, Player: [player]")
+			continue
+		if(!job.player_old_enough(player.client))
+			Debug("FOC player not old enough, Player: [player]")
+			continue
+		if(flag && (!(flag in player.client.prefs.be_special)))
+			Debug("FOC flag failed, Player: [player], Flag: [flag], ")
+			continue
+		if(player.mind && job.title in player.mind.restricted_roles)
+			Debug("FOC incompatible with antagonist role, Player: [player]")
+			continue
+		if(config.enforce_human_authority && !player.client.prefs.pref_species.qualifies_for_rank(job.title, player.client.prefs.features))
+			Debug("FOC non-human failed, Player: [player]")
+			continue
+		candidates += player
+	return candidates
+
 /datum/subsystem/job/proc/GiveRandomJob(mob/new_player/player)
 	Debug("GRJ Giving random job, Player: [player]")
 	for(var/datum/job/job in shuffle(occupations))
@@ -149,6 +170,70 @@ var/datum/subsystem/job/SSjob
 	unassigned = list()
 	return
 
+/datum/subsystem/job/proc/FillCaptainPosition()
+	if(unassigned.len <= 1)
+		var/captain_selected = 0
+		var/datum/job/job = GetJob("Captain")
+		if(!job)
+			return 0
+		for(var/i = job.total_positions, i > 0, i--)
+			for(var/level = 1 to 3)
+				var/list/candidates = list()
+				candidates = FindOccupationCandidates(job, level)
+				if(candidates.len)
+					var/mob/new_player/candidate = pick(candidates)
+					if(AssignRole(candidate, "Captain"))
+						if(adminlog)
+							message_admins("Capitan elegido por eleccion de jugador")
+							log_game("Capitan elegido por eleccion de jugador")
+						captain_selected++
+						break
+		if(captain_selected)
+			return 1
+		//Aqui vamos a hacer que el hop se convierta en capitan :)
+		for(var/i = job.total_positions, i > 0, i--)
+			for(var/level = 1 to 3)
+				var/list/candidates = list()
+				candidates = FindOccupationCandidates(GetJob("Head of Personnel"), level)
+				if(candidates.len)
+					var/mob/new_player/candidate = pick(candidates)
+					if(AssignRole(candidate, "Captain"))
+						if(adminlog)
+							message_admins("Capitan elegido por ser HOP, aver studiao")
+							log_game("Capitan elegido por ser HOP, aver studiao")
+						captain_selected++
+						break
+		if(captain_selected)
+			return 1
+		else
+			if(adminlog)
+				message_admins("No hay jugadores que quieran ser HOP")
+				log_game("No hay jugadores que quieran ser HOP")
+		if(adminlog)
+			message_admins("Empieza la eleccion random de capitan")
+			log_game("Empieza la eleccion random de capitan")
+		var/list/candidates = list()
+		candidates = FindValidCandidates(job)
+		if(candidates.len)
+			var/mob/new_player/candidate = pick(candidates)
+			if(AssignRole(candidate, "Captain"))
+				if(adminlog)
+					message_admins("Capitan elegido por eleccion de jugador")
+					log_game("Capitan elegido por eleccion de jugador")
+				captain_selected++
+		if(captain_selected)
+			return 1
+		else
+			if(adminlog)
+				message_admins("No hay jugadores que puedan ser capitan todos son too young")
+				log_game("No hay jugadores que puedan ser capitan todos son too young")
+	else
+		if(adminlog)
+			message_admins("No hay suficientes jugadores para asignar un capitan")
+			log_game("No hay suficientes jugadores para asignar un capitan")
+		return 0
+	return 0
+
 
 //This proc is called before the level loop of DivideOccupations() and will try to select a head, ignoring ALL non-head preferences for every level until
 //it locates a head or runs out of levels to check
@@ -162,6 +247,7 @@ var/datum/subsystem/job/SSjob
 			if((job.current_positions >= job.total_positions) && job.total_positions != -1)
 				continue
 			var/list/candidates = FindOccupationCandidates(job, level)
+			Debug(candidates)
 			if(!candidates.len)
 				continue
 			var/mob/new_player/candidate = pick(candidates)
@@ -205,88 +291,67 @@ var/datum/subsystem/job/SSjob
 		return 1
 	return 0
 
-
-/** Proc DivideOccupations
- *  fills var "assigned_role" for all ready players.
- *  This proc must not have any side effect besides of modifying "assigned_role".
- **/
 /datum/subsystem/job/proc/DivideOccupations()
-	//Setup new player list and get the jobs list
-	Debug("Running DO")
-
-	//Holder for Triumvirate is stored in the ticker, this just processes it
 	if(ticker)
 		for(var/datum/job/ai/A in occupations)
 			if(ticker.triai)
 				A.spawn_positions = 3
 
-	//Get the players who are ready
 	for(var/mob/new_player/player in player_list)
 		if(player.ready && player.mind && !player.mind.assigned_role)
 			unassigned += player
 
 	initial_players_to_assign = unassigned.len
 
-	Debug("DO, Len: [unassigned.len]")
 	if(unassigned.len == 0)
 		return 0
 
-	//Scale number of open security officer slots to population
 	setup_officer_positions()
 
-	//Jobs will have fewer access permissions if the number of players exceeds the threshold defined in game_options.txt
 	if(config.minimal_access_threshold)
 		if(config.minimal_access_threshold > unassigned.len)
 			config.jobs_have_minimal_access = 0
 		else
 			config.jobs_have_minimal_access = 1
 
-	//Shuffle players and jobs
 	unassigned = shuffle(unassigned)
 
 	HandleFeedbackGathering()
 
-	//People who wants to be assistants, sure, go on.
-	Debug("DO, Running Assistant Check 1")
 	var/datum/job/assist = new /datum/job/assistant()
 	var/list/assistant_candidates = FindOccupationCandidates(assist, 3)
-	Debug("AC1, Candidates: [assistant_candidates.len]")
+
 	for(var/mob/new_player/player in assistant_candidates)
-		Debug("AC1 pass, Player: [player]")
 		AssignRole(player, "Assistant")
 		assistant_candidates -= player
-	Debug("DO, AC1 end")
 
-	//Select one head
-	Debug("DO, Running Head Check")
+	if(adminlog)
+		message_admins("Empieza la selecion de capitan, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+		log_game("Empieza la selecion de capitan, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+	FillCaptainPosition()
+
+	if(adminlog)
+		message_admins("Empieza la selecion de heads, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+		log_game("Empieza la selecion de heads, ahora mismo tenemos [unassigned.len] jugadores a asignar")
 	FillHeadPosition()
-	Debug("DO, Head Check end")
 
-	//Check for an AI
-	Debug("DO, Running AI Check")
+	if(adminlog)
+		message_admins("Empieza la selecion de la IA, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+		log_game("Empieza la selecion de la IA, ahora mismo tenemos [unassigned.len] jugadores a asignar")
 	FillAIPosition()
-	Debug("DO, AI Check end")
 
-	//Other jobs are now checked
-	Debug("DO, Running Standard Check")
+	if(adminlog)
+		message_admins("Empieza la selecion de jobs esenciales, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+		log_game("Empieza la selecion de jobs esenciales, ahora mismo tenemos [unassigned.len] jugadores a asignar")
 
-
-	// New job giving system by Donkie
-	// This will cause lots of more loops, but since it's only done once it shouldn't really matter much at all.
-	// Hopefully this will add more randomness and fairness to job giving.
-
-	// Loop through all levels from high to low
 	var/list/shuffledoccupations = shuffle(occupations)
 	for(var/level = 1 to 3)
-		//Check the head jobs first each level
 		CheckHeadPositions(level)
 
-		// Loop through all unassigned players
 		for(var/mob/new_player/player in unassigned)
 			if(PopcapReached())
 				RejectPlayer(player)
 
-			// Loop through all jobs
 			for(var/datum/job/job in shuffledoccupations) // SHUFFLE ME BABY
 				if(!job)
 					continue
@@ -307,24 +372,18 @@ var/datum/subsystem/job/SSjob
 					Debug("DO non-human failed, Player: [player], Job:[job.title]")
 					continue
 
-
-				// If the player wants that job on this level, then try give it to him.
 				if(player.client.prefs.GetJobDepartment(job, level) & job.flag)
-
-					// If the job isn't filled
 					if((job.current_positions < job.spawn_positions) || job.spawn_positions == -1)
 						Debug("DO pass, Player: [player], Level:[level], Job:[job.title]")
 						AssignRole(player, job.title)
 						unassigned -= player
 						break
 
-	// Hand out random jobs to the people who didn't get any in the last check
-	// Also makes sure that they got their preference correct
 	for(var/mob/new_player/player in unassigned)
 		if(PopcapReached())
 			RejectPlayer(player)
 		else if(jobban_isbanned(player, "Assistant"))
-			GiveRandomJob(player) //you get to roll for random before everyone else just to be sure you don't get assistant. you're so speshul
+			GiveRandomJob(player)
 
 	for(var/mob/new_player/player in unassigned)
 		if(PopcapReached())
@@ -332,11 +391,6 @@ var/datum/subsystem/job/SSjob
 		else if(player.client.prefs.userandomjob)
 			GiveRandomJob(player)
 
-	Debug("DO, Standard Check end")
-
-	Debug("DO, Running AC2")
-
-	// For those who wanted to be assistant if their preferences were filled, here you go.
 	for(var/mob/new_player/player in unassigned)
 		if(PopcapReached())
 			RejectPlayer(player)
