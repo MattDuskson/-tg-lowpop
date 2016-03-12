@@ -171,7 +171,7 @@ var/datum/subsystem/job/SSjob
 	return
 
 /datum/subsystem/job/proc/FillCaptainPosition()
-	if(unassigned.len <= 1)
+	if(unassigned.len >= 6)
 		var/captain_selected = 0
 		var/datum/job/job = GetJob("Captain")
 		if(!job)
@@ -190,8 +190,8 @@ var/datum/subsystem/job/SSjob
 						break
 		if(captain_selected)
 			return 1
-		//Aqui vamos a hacer que el hop se convierta en capitan :)
-		for(var/i = job.total_positions, i > 0, i--)
+		//Disabled mientras no sepamos que hacer con esto.
+		/*for(var/i = job.total_positions, i > 0, i--)
 			for(var/level = 1 to 3)
 				var/list/candidates = list()
 				candidates = FindOccupationCandidates(GetJob("Head of Personnel"), level)
@@ -226,7 +226,7 @@ var/datum/subsystem/job/SSjob
 		else
 			if(adminlog)
 				message_admins("No hay jugadores que puedan ser capitan todos son too young")
-				log_game("No hay jugadores que puedan ser capitan todos son too young")
+				log_game("No hay jugadores que puedan ser capitan todos son too young")*/
 	else
 		if(adminlog)
 			message_admins("No hay suficientes jugadores para asignar un capitan")
@@ -253,6 +253,61 @@ var/datum/subsystem/job/SSjob
 			var/mob/new_player/candidate = pick(candidates)
 			if(AssignRole(candidate, command_position))
 				return 1
+	return 0
+
+/datum/subsystem/job/proc/FillEssentialPosition(oficio, jefe)
+	var/datum/job/job = GetJob(jefe)
+	var/boss = 0
+	var/cantidad = 0
+	if(!job)
+		cantidad = 0
+		boss = 1
+	else
+		cantidad = job.current_positions
+		boss = 0
+	job = GetJob(oficio)
+	cantidad += job.current_positions
+	if(cantidad == 0)
+		if(boss)
+			job = GetJob(jefe)
+		for(var/level = 1 to 3)
+			var/list/candidates = list()
+			candidates = FindOccupationCandidates(job, level)
+			if(candidates.len)
+				var/mob/new_player/candidate = pick(candidates)
+				if(AssignRole(candidate, job))
+					if(boss)
+						if(adminlog)
+							message_admins("[jefe] elegido por eleccion de jugador")
+							log_game("[jefe] elegido por eleccion de jugador")
+					else
+						if(adminlog)
+							message_admins("[oficio] elegido por eleccion de jugador")
+							log_game("[oficio] elegido por eleccion de jugador")
+					return 1
+					break
+		if(boss)
+			job = GetJob(oficio)
+		for(var/level = 1 to 3)
+			var/list/candidates = list()
+			candidates = FindOccupationCandidates(job, level)
+			if(candidates.len)
+				var/mob/new_player/candidate = pick(candidates)
+				if(AssignRole(candidate, job))
+					if(boss)
+						if(adminlog)
+							message_admins("[jefe] elegido por eleccion de jugador")
+							log_game("[jefe] elegido por eleccion de jugador")
+					else
+						if(adminlog)
+							message_admins("[oficio] elegido por eleccion de jugador")
+							log_game("[oficio] elegido por eleccion de jugador")
+					return 1
+					break
+	else
+		if(adminlog)
+			message_admins("Ya hay suficientes [oficio]")
+			log_game("Ya hay suficientes [oficio]")
 	return 0
 
 
@@ -330,6 +385,13 @@ var/datum/subsystem/job/SSjob
 		log_game("Empieza la selecion de capitan, ahora mismo tenemos [unassigned.len] jugadores a asignar")
 	FillCaptainPosition()
 
+
+	if(adminlog)
+		message_admins("Empieza la selecion de jobs esenciales, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+		log_game("Empieza la selecion de jobs esenciales, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+	FillEssentialPosition("Station Engineer", "Chief Engineer")
+	FillEssentialPosition("Chief Medical Officer", "Medical Doctor")
+
 	if(adminlog)
 		message_admins("Empieza la selecion de heads, ahora mismo tenemos [unassigned.len] jugadores a asignar")
 		log_game("Empieza la selecion de heads, ahora mismo tenemos [unassigned.len] jugadores a asignar")
@@ -340,9 +402,11 @@ var/datum/subsystem/job/SSjob
 		log_game("Empieza la selecion de la IA, ahora mismo tenemos [unassigned.len] jugadores a asignar")
 	FillAIPosition()
 
+
 	if(adminlog)
-		message_admins("Empieza la selecion de jobs esenciales, ahora mismo tenemos [unassigned.len] jugadores a asignar")
-		log_game("Empieza la selecion de jobs esenciales, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+		message_admins("Empieza la selecion del resto de la tripuilacion, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+		log_game("Empieza la selecion del resto de la tripuilacion, ahora mismo tenemos [unassigned.len] jugadores a asignar")
+
 
 	var/list/shuffledoccupations = shuffle(occupations)
 	for(var/level = 1 to 3)
@@ -394,7 +458,6 @@ var/datum/subsystem/job/SSjob
 	for(var/mob/new_player/player in unassigned)
 		if(PopcapReached())
 			RejectPlayer(player)
-		Debug("AC2 Assistant located, Player: [player]")
 		AssignRole(player, "Assistant")
 	return 1
 
@@ -442,11 +505,11 @@ var/datum/subsystem/job/SSjob
 			H = new_mob
 		job.apply_fingerprints(H)
 
-	H << "<b>You are the [rank].</b>"
-	H << "<b>As the [rank] you answer directly to [job.supervisors]. Special circumstances may change this.</b>"
-	H << "<b>To speak on your departments radio, use the :h button. To see others, look closely at your headset.</b>"
+	H << "<b>Tu eres [rank].</b>"
+	H << "<b>Como [rank] respondes directamente ante [job.supervisors]. Circunstancias especiales pueden cambiar esto.</b>"
+	H << "<b>Para hablar por tu radio puedes usar ; para la radio general o :h para la de tu grupo..</b>"
 	if(job.req_admin_notify)
-		H << "<b>You are playing a job that is important for Game Progression. If you have to disconnect, please notify the admins via adminhelp.</b>"
+		H << "<b>Eres un job importante para el desarrollo de la partida, si te vas a desconectar avisa a un admin.</b>"
 	if(config.minimal_access_threshold)
 		H << "<FONT color='blue'><B>As this station was initially staffed with a [config.jobs_have_minimal_access ? "full crew, only your job's necessities" : "skeleton crew, additional access may"] have been added to your ID card.</B></font>"
 	return 1
