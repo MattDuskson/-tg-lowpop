@@ -4,7 +4,7 @@
 #ifdef PUTONHUB
 	hub_password = "kMZy3U5jJHSiBQjr"
 #else
-	hub_password = "SORRYNOPASSWORD"
+	hub_password = "kMZy3U5jJHSiBQjr"
 #endif
 	name = "/tg/ Station 13"
 
