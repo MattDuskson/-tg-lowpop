@@ -50,7 +50,7 @@ Changes to the uplinks were made to discourage murderboning, the rest is the sam
 
 		#define TITLESCREEN "title" //Add an image in misc/fullscreen.dmi, and set this define to the icon_state, to set a custom titlescreen for your map
 
-        #include "map_files\MiniStation\FidoStation.dmm"
+        #include "map_files\FidoStation\FidoStation.dmm"
         #include "map_files\generic\z2.dmm"
         #include "map_files\generic\z3.dmm"
         #include "map_files\generic\z4.dmm"
@@ -58,9 +58,9 @@ Changes to the uplinks were made to discourage murderboning, the rest is the sam
         #include "map_files\generic\z6.dmm"
         #include "map_files\generic\z7.dmm"
 
-		#define MAP_PATH "map_files/MiniStation"
-        #define MAP_FILE "MiniStation.dmm"
-        #define MAP_NAME "MiniStation"
+		#define MAP_PATH "map_files/FidoStation"
+        #define MAP_FILE "FidoStation.dmm"
+        #define MAP_NAME "FidoStation"
 
         #define MAP_TRANSITION_CONFIG	list(MAIN_STATION = CROSSLINKED, CENTCOMM = SELFLOOPING, ABANDONED_SATELLITE = CROSSLINKED, DERELICT = CROSSLINKED, MINING = CROSSLINKED, EMPTY_AREA_1 = CROSSLINKED, EMPTY_AREA_2 = CROSSLINKED)
 
