@@ -54,7 +54,7 @@ Changes to the uplinks were made to discourage murderboning, the rest is the sam
         #include "map_files\generic\z2.dmm"
         #include "map_files\generic\z3.dmm"
         #include "map_files\generic\z4.dmm"
-        #include "map_files\MiniStation\z5.dmm"
+        #include "map_files\generic\z5.dmm"
         #include "map_files\generic\z6.dmm"
         #include "map_files\generic\z7.dmm"
 
