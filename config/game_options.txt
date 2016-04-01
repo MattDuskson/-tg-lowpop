@@ -21,7 +21,7 @@ REVIVAL_BRAIN_LIFE -1
 ### RENAMING ###
 
 #Uncomment to allow cyborgs to rename themselves at roundstart.  Has no effect on roboticists renaming cyborgs the normal way.
-#RENAME_CYBORG
+RENAME_CYBORG
 
 ### OOC DURING ROUND ###
 #Comment this out if you want OOC to be automatically disabled during the round, it will be enabled during the lobby and after the round end results.
@@ -55,19 +55,19 @@ ANIMAL_DELAY 0
 
 ### NAMES ###
 ## If uncommented this adds a random surname to a player's name if they only specify one name.
-#HUMANS_NEED_SURNAMES
+HUMANS_NEED_SURNAMES
 
 ## If uncommented, this forces all players to use random names !and appearances!.
 #FORCE_RANDOM_NAMES
 
 
 ### ALERT LEVELS ###
-ALERT_GREEN All threats to the station have passed. Security may not have weapons visible, privacy laws are once again fully enforced.
-ALERT_BLUE_UPTO The station has received reliable information about possible hostile activity on the station. Security staff may have weapons visible, random searches are permitted.
-ALERT_BLUE_DOWNTO The immediate threat has passed. Security may no longer have weapons drawn at all times, but may continue to have them visible. Random searches are still allowed.
-ALERT_RED_UPTO There is an immediate serious threat to the station. Security may have weapons unholstered at all times. Random searches are allowed and advised.
-ALERT_RED_DOWNTO The station's destruction has been averted. There is still however an immediate serious threat to the station. Security may have weapons unholstered at all times, random searches are allowed and advised.
-ALERT_DELTA Destruction of the station is imminent. All crew are instructed to obey all instructions given by heads of staff. Any violations of these orders can be punished by death. This is not a drill.
+ALERT_GREEN No hay amenazas en la estación. Los oficiales deben enfundar sus armas, los tripualantes vuelven a tener derecho a privacidad..
+ALERT_BLUE_UPTO Se ha recibido informacion sobre posible actividad hostil en la estacion. Los oficiales pueden llevar sus armas desenfundadas, se permiten los chequeos aleatorios.
+ALERT_BLUE_DOWNTO Ya no hay peligro inmediato. Seguridad ya no puede llevar sus armas desenfundadas, pero pueden tenerlas a la vista. Se siguen permitiendo cacheos aleatorios.
+ALERT_RED_UPTO Hay una grave amenaza inminente en la estacion. Seguridad puede llevar sus armas desenfundadas. Se permiten y recomiendan cacheos aleatorios.
+ALERT_RED_DOWNTO Se ha evitado la destruccion de la estacion. Pero todavia hay una grave amenaza en la estacion. Seguridad puede llevar sus armas desenfundadas. Se permiten y recomiendan cacheos aleatorios.
+ALERT_DELTA La destruccion de la estacion es inminente. Todos los tripulantes deben obedecer las ordenes de los jefes de departamento. Ignorar las instrucciones puede costarte la vida. Esto no es un simulacro.
 
 
 
@@ -170,7 +170,7 @@ PROTECT_ROLES_FROM_ANTAGONIST
 #PROTECT_ASSISTANT_FROM_ANTAGONIST
 
 ## If non-human species are barred from joining as a head of staff
-#ENFORCE_HUMAN_AUTHORITY
+ENFORCE_HUMAN_AUTHORITY
 
 ## If late-joining players have a chance to become a traitor/changeling
 ALLOW_LATEJOIN_ANTAGONISTS
@@ -213,7 +213,7 @@ MINIMAL_ACCESS_THRESHOLD 8
 #ASSISTANTS_HAVE_MAINT_ACCESS
 
 ## Uncoment to give security maint access. Note that if you comment JOBS_HAVE_MINIMAL_ACCESS security already gets maint from that.
-#SECURITY_HAS_MAINT_ACCESS
+SECURITY_HAS_MAINT_ACCESS
 
 ## Uncomment to give everyone maint access.
 #EVERYONE_HAS_MAINT_ACCESS
@@ -285,7 +285,7 @@ ROUNDSTART_RACES jelly
 JOIN_WITH_MUTANT_HUMANS
 
 ## Assistant slot cap. Set to -1 for unlimited.
-ASSISTANT_CAP -1
+ASSISTANT_CAP 3
 
 ## Starlight for exterior walls and breaches. Uncomment for starlight!
 STARLIGHT
