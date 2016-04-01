@@ -75,13 +75,15 @@ ALLOW_ADMIN_OOCCOLOR
 ALLOW_METADATA
 
 ## allow players to initiate a restart vote
-#ALLOW_VOTE_RESTART
+ALLOW_VOTE_RESTART
 
 ## allow players to initate a mode-change start
 #ALLOW_VOTE_MODE
 
 ## min delay (deciseconds) between voting sessions (default 10 minutes)
-VOTE_DELAY 6000
+VOTE_DELAY 36000
+# Despues de una hora de partida se permite iniciar una votación de restart (no se inicia la votacion automaticamente)
+# No engis/Singulo free/No admins/etc.
 
 ## time period (deciseconds) which voting session will last (default 1 minute)
 VOTE_PERIOD 600
@@ -125,23 +127,23 @@ GUEST_BAN
 SERVER hispanistation.com
 
 ## forum address
-# FORUMURL http://tgstation13.org/phpBB/index.php
+ FORUMURL http://hispanistation12.enjin.com/
 
 ## Wiki address
-# WIKIURL http://www.tgstation13.org/wiki
+ WIKIURL https://tgstation13.org/wiki/Main_Page
 
 ##Rules address
-# RULESURL http://www.tgstation13.org/wiki/Rules
+ RULESURL http://hispanistation12.enjin.com/forum/m/31299572/viewthread/22478123-normas-del-servidor
 
 ##Github address
-# GITHUBURL https://www.github.com/tgstation/-tg-station
+ GITHUBURL https://github.com/Hispanistation/-tg-lowpop/
 
 ## Ban appeals URL - usually for a forum or wherever people should go to contact your admins.
-# BANAPPEALS http://justanotherday.example.com
+ BANAPPEALS http://hispanistation12.enjin.com/incidencias
 
 ## In-game features
 ##Toggle for having jobs load up from the .txt
-# LOAD_JOBS_FROM_TXT
+ LOAD_JOBS_FROM_TXT
 
 ##Remove the # mark infront of this to forbid admins from possessing the singularity.
 #FORBID_SINGULO_POSSESSION
@@ -213,7 +215,7 @@ AUTOCONVERT_NOTES
 ANNOUNCE_ADMIN_LOGOUT
 
 ## Uncomment to have an admin message sent anytime an admin connects to a round in play, you can edit the messages in admin.dm
-#ANNOUNCE_ADMIN_LOGIN
+ANNOUNCE_ADMIN_LOGIN
 
 ## Map rotation
 ## This feature requires you are running a Windows OS (or can other wise run .bat files) and that you are using the tgstation-server toolset in tools/
@@ -232,4 +234,4 @@ ANNOUNCE_ADMIN_LOGOUT
 
 ## GENERATE_MINIMAPS
 ## Generating minimaps(For crew monitor) is slow and bogs down testing, so its disabled by default and must be enabled by uncommenting this config if you are running a production server.
-#GENERATE_MINIMAPS
+GENERATE_MINIMAPS
