@@ -134,9 +134,10 @@
 		fingerprints = pick_fingerprints()
 	*/
 
-	src.text += "<BR><BR>The <B><U>[name_1] [name_2]</U></B> implied an undercover operative was acting on their behalf on the station currently."
-	src.text += "It would be in your best interests to suspect everybody, as these undercover operatives could have implants which trigger them to have their memories removed until they are needed. He, or she, could even be a high ranking officer."
+	src.text += "<BR><BR>El agente enemigo <B><U>[name_1] [name_2]</U></B> se ha infiltrado en su estación."
+	src.text += "Se recomienda sospechar de todo el mundo ya que estos agentes pueden tener chips que mantendrian su memoria borrada hasta que fueran necesarios ser activas. El o ella podria incluso ser oficiales de alto rango"
 	src.text += "<BR><HR>"
+
 	/*
 	src.text += "After some investigation, we "
 	if(traitor_name)
@@ -174,9 +175,11 @@
 	else
 		traitor_name = pick_mob()
 	*/
-	src.text += "<BR><BR>It has been brought to our attention that the <B><U>[name_1] [name_2]</U></B> have stumbled upon some dark secrets. They apparently want to spread the dangerous knowledge onto as many stations as they can."
-	src.text += "Watch out for the following: praying to an unfamilar god, preaching the word of \[REDACTED\], sacrifices, magical dark power, living constructs of evil and a portal to the dimension of the underworld."
+
+	src.text += "<BR><BR>	Hemos obtenido información sobre la posible aparición del culto <B><U>[name_1] [name_2]</U></B> cerca de su estación. Aparentemente intenta expandir el conocimiento sobre artes oscuras dentro de la estación."
+	src.text += "Se recomienda vigilar la estación en búsqueda de los siguientes indicios de cultismo: Rezar a un dios poco familiar, sacrificios, poderes magicos, aparición de criaturas magicas y portales al inframundo."
 	src.text += "<BR><HR>"
+
 	/*
 	src.text += "Based on our intelligence, we are [prob_right_job]% sure that if true, someone doing the job of [traitor_job] on your station may have been converted "
 	src.text += "and instilled with the idea of the flimsiness of the real world, seeking to destroy it. "
@@ -215,9 +218,11 @@
 	else
 		traitor_name = src.pick_mob()
 	*/
-	src.text += "<BR><BR>It has been brought to our attention that the <B><U>[name_1] [name_2]</U></B> are attempting to stir unrest on one of our stations in your sector."
-	src.text += "Watch out for suspicious activity among the crew and make sure that all heads of staff report in periodically."
+
+	src.text += "<BR><BR>Han llegado informes de un posible intento de revolución en su estación causado por <B><U>[name_1] [name_2]</U>."
+	src.text += "Vigile cualquier actividad sospechosa entre la tripulación y asegurese de que los heads reporten situación periodicamente por su seguridad."
 	src.text += "<BR><HR>"
+
 	/*
 	src.text += "Based on our intelligence, we are [prob_right_job]% sure that if true, someone doing the job of [traitor_job] on your station may have been brainwashed "
 	src.text += "at a recent conference, and their department should be closely monitored for signs of mutiny. "
@@ -228,26 +233,31 @@
 	*/
 
 /datum/intercept_text/proc/build_gang(datum/mind/correct_person)
-	src.text += "<BR><BR>We have reports of criminal activity in close proximity to our operations within your sector."
-	src.text += "Ensure law and order is maintained on the station and be on the lookout for territorial aggression within the crew."
-	src.text += "In the event of a full-scale criminal takeover threat, sensitive research items are to be secured and the station evacuated ASAP."
+	src.text += "<BR><BR>	Tenemos reportes de actividad criminal cerca de sus proximidades."
+	src.text += "Asegúrense de mantener la ley y el orden en la estación y estén atentos a posibles apariciones de agresiones territoriales y graffitis en las paredes."
+	src.text += "En el evento de que los criminales intenten tomar control de la estación, se ordena evacuar la estación junto con cualquier avance tecnológico hallado."
 	src.text += "<BR><HR>"
+
 
 /datum/intercept_text/proc/build_wizard(datum/mind/correct_person)
 	var/SWF_desc = pick(SWF_names)
-
-	src.text += "<BR><BR>The evil Space Wizards Federation have recently broke their most feared wizard, known only as <B>\"[SWF_desc]\"</B> out of space jail. "
-	src.text += "He is on the run, last spotted in a system near your present location. If anybody suspicious is located aboard, please "
-	src.text += "approach with EXTREME caution. Centcom also recommends that it would be wise to not inform the crew of this, due to their fearful nature."
-	src.text += "Known attributes include: Brown sandals, a large blue hat, a voluptous white beard, and an inclination to cast spells."
+	src.text += "<BR><BR>La Federación Especial de Magos ha liberado recientemente a uno de sus mas poderosos magos, conocido como <B>\"[SWF_desc]\"</B> out of space jail. "
+	src.text += "<BR><BR>Aun se encuentre a la fuga y ha sido localizado cerca del sistema donde ustedes estan localizados. Si encuentras a cualquier persona sospechosa"
+	src.text += "por favor actuen con extrema precaucación, desconocemos las intenciones del sujeto en cuestion. Queda en su juicio informar a la tripulación pero"
+	src.text += "desde Centcom recomendamos no hacerlo."
+	src.text += "<BR><HR>"
+	src.text += "Se recomienda al departamento de seguridad que vigile a la propia población, ya que se han conocido casos de subversion e incluso motin por incitacion de estos alborotadores"
+	src.text += "<BR><HR>"
+	src.text += "Apariencia del mago: Sandalias marrones, un gran sombrero azul, una voluptuosa barba blanca y la capacidad de utilizar hechizos"
 	src.text += "<BR><HR>"
 
 /datum/intercept_text/proc/build_nuke(datum/mind/correct_person)
-	src.text += "<BR><BR>Centcom recently received a report of a plot to destroy one of our stations in your area. We believe the Nuclear Authentication Disc "
-	src.text += "that is standard issue aboard your vessel may be a target. We recommend removal of this object, and it's storage in a safe "
-	src.text += "environment. As this may cause panic among the crew, all efforts should be made to keep this information a secret from all but "
-	src.text += "the most trusted crew-members."
+	src.text += "<BR><BR>Centcom ha recibo un reporte sobre un posible plan de destrución contra una de nuestras estaciones en el area. Creemos que el 'Nuclear Authentication Disc'"
+	src.text += "es el objetivo principal de esta misión. Recomendamos almacenarlo en algun ambiente seguro. Esto posiblemente causaria"
+	src.text += "panico entre los miembros de la tripulación. Queda a su discreción con quien comparte esta información pero recomendamos hacerlo solo "
+	src.text += "con los miembros de mayor confianza de la tripulación."
 	src.text += "<BR><HR>"
+
 
 /datum/intercept_text/proc/build_changeling(datum/mind/correct_person)
 	var/cname = pick(src.changeling_names)
@@ -275,17 +285,15 @@
 		changeling_name = src.pick_mob()
 	*/
 
-	src.text += "<BR><BR>We have received a report that a dangerous alien lifeform known only as <B><U>\"[cname]\"</U></B> may have infiltrated your crew.  "
-	/*
-	src.text += "Our intelligence suggests a [prob_right_job]% chance that a [changeling_job] on board your station has been replaced by the alien.  "
-	src.text += "Additionally, the report indicates a [prob_right_dude]% chance that [changeling_name] may have been in contact with the lifeform at a recent social gathering.  "
-	*/
-	src.text += "These lifeforms are associated with the <B><U>[orgname1] [orgname2]</U></B> and may be attempting to acquire sensitive materials on their behalf.  "
-	src.text += "Please take care not to alarm the crew, as <B><U>[cname]</U></B> may take advantage of a panic situation. Remember, they can be anybody, suspect everybody!"
+	src.text += "<BR><BR>Hemos recibo un reporte de que un peligroso Cambiaformas conocido como <B><U>\"[cname]\"</U></B> puede haberse infiltrado entre su tripulación. "
+	src.text += "Estos Cambiaformas están asociados con <B><U>[orgname1] [orgname2]</U></B> y posiblemente intenten adquirir información sensible sobre nuestra corporación. "
+	src.text += "Entre las posibles mutaciones de este Cambiaforma es posible que puedan adquirir el aspecto de cualquier persona de la tripulación, correr a grandes velocidades y adquirir capacidades físicas imposible para el empleado medio entre otras mutaciones desconocidas. "
+	src.text += "Informes demuestran que son débiles ante cremaciones, desmembramientos causado por explosiones, extración del cerebro y al N20 aunque podría adquirir mutaciones que cubran estos defectos. "
+	src.text += "Procedan con precaución ante cualquier anomalía y sospeche de todo el mundo. Recuerde: Puede adquirir la apariencia de cualquier persona, sospeche de todo el mundo y actué en consecuencia."
 	src.text += "<BR><HR>"
 
 /datum/intercept_text/proc/build_shadowling(datum/mind/correct_person)
-	src.text += "<br><br>Sightings of strange alien creatures have been observed in your area. These aliens supposedly possess the ability to enslave unwitting personnel and leech from their power. \
-	Be wary of dark areas and ensure all lights are kept well-maintained. Closely monitor all crew for suspicious behavior and perform dethralling surgery if they have obvious tells. Investigate all \
-	reports of odd or suspicious sightings in maintenance."
+	src.text += "<br><br>Avistamiento de una extraña criatura alienigena han sido observados en su area. Estos aliens poseen la habilidad de esclavizar a su tripulación y alimentarse de ellos."
+	src.text += "Tengan cuidado de zonas oscuras y mantengan la luces en el mejor estado posible. Monitorize todo miembro de la tripulación con comportamiento sospechosa y elimínelos si es necesario."
+	src.text += "Investiga todos los avistamientos sospechosos en mantenimiento."
 	src.text += "<br><br>"
