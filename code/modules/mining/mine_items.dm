@@ -37,10 +37,11 @@
 /obj/structure/closet/secure_closet/miner/New()
 	..()
 	new /obj/item/device/radio/headset/headset_cargo(src)
-	new /obj/item/device/mining_scanner(src)
+	new /obj/item/device/t_scanner/adv_mining_scanner/lesser(src)
 	new /obj/item/weapon/storage/bag/ore(src)
 	new /obj/item/weapon/shovel(src)
 	new /obj/item/weapon/pickaxe(src)
+	new /obj/item/weapon/gun/energy/kinetic_accelerator(src)
 	new /obj/item/clothing/glasses/meson(src)
 	new /obj/item/weapon/survivalcapsule(src)
 
@@ -189,9 +190,9 @@
 		sleep(50)
 		var/clear = TRUE
 		for(var/turf/T in range(3,src))
-			if(istype(T, /turf/simulated/mineral) || !T.density)
-				continue
-			clear = FALSE
+			if((!istype(T, /turf/simulated/mineral)) && T.density)
+				clear = FALSE
+				break
 		if(!clear)
 			src.loc.visible_message("The [src] doesn't have room to deploy! You need to clear a 3x3 area!")
 			used = FALSE
